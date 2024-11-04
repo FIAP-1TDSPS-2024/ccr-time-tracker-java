@@ -33,7 +33,7 @@ public class Percurso {
         this.estacaoOrigem = estacaoOrigem;
     }
 
-    public void setestacaoDestino(Estacao estacaoDestino) {
+    public void setEstacaoDestino(Estacao estacaoDestino) {
         this.estacaoDestino = estacaoDestino;
     }
 
