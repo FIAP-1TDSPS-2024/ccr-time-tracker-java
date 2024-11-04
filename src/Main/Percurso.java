@@ -29,7 +29,7 @@ public class Percurso {
         return linha;
     }
 
-    public void setestacaoOrigem(Estacao estacaoOrigem) {
+    public void setEstacaoOrigem(Estacao estacaoOrigem) {
         this.estacaoOrigem = estacaoOrigem;
     }
 
