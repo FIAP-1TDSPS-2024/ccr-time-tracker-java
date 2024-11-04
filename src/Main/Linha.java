@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Linha {
     private String nome;
     private String abreviacao;
-    private ArrayList<Estacao> estacoes = new ArrayList<Estacao>();
+    private ArrayList<Estacao> estacoes;
 
     public Linha(String nome, String abreviacao, ArrayList<Estacao> estacoes) {
         this.nome = nome;

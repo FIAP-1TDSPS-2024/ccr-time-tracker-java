@@ -2,15 +2,18 @@ package Main;
 
 public class Admin extends Funcionario {
 
-    public Admin(String nome, String cpf, String email, String senha) {
+    private Empresa empresa;
+
+    public Admin(String nome, String cpf, String email, String senha, Empresa empresa) {
         super(nome, cpf, email, senha, "Admin");
+        this.empresa = empresa;
     }
 
-    public void cadastrarFuncionario(Empresa empresa, Funcionario funcionario) {
-        empresa.cadastrarFuncionario(funcionario);
+    public void cadastrarFuncionario(Funcionario funcionario) {
+        this.empresa.cadastrarFuncionario(funcionario);
     }
 
-    public void removerFuncionario(Empresa empresa, Funcionario funcionario) {
-        empresa.removerFuncionario(funcionario);
+    public void removerFuncionario(Funcionario funcionario) {
+        this.empresa.removerFuncionario(funcionario);
     }
 }

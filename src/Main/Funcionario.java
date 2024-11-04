@@ -10,6 +10,7 @@ public class Funcionario extends Pessoa {
 
     public Funcionario(String nome, String cpf, String email, String senha, String cargo) {
         super(nome, cpf, email);
+        this.senha = senha;
         this.cargo = cargo;
     }
 
@@ -26,15 +27,32 @@ public class Funcionario extends Pessoa {
     }
 
     public void adicionarItem(Item item) {
+        for (Item i : itens) {
+            if (i.equals(item)) {
+                System.out.println("Item já adicionado!");
+                return;
+            }
+        }
         itens.add(item);
     }
 
     public void removerItem(Item item) {
-        itens.remove(item);
+        for (Item i : itens) {
+            if (i.equals(item)) {
+                System.out.println("Removendo item " + item.getNome());
+                itens.remove(item);
+            }
+        }
+
     }
 
     public void acessarItem(Item item) {
-        item.acessar();
+        for (Item i : itens) {
+            if (i.equals(item)) {
+                System.out.println("Acessando item " + item.getUrl());
+                item.acessar();
+            }
+        }
     }
 
     public void listarItens() {
