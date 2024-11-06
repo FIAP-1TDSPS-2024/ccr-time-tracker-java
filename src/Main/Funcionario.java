@@ -18,6 +18,10 @@ public class Funcionario extends Pessoa {
         return cargo;
     }
 
+    protected void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
+
     public void login(String senha) {
         if (this.senha.equals(senha)) {
             System.out.println("Login efetuado com sucesso!");

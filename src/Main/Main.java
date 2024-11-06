@@ -8,7 +8,7 @@ public class Main {
 
         System.out.println("Testes CCR TimeTracker");
         System.out.println("=====================================");
-        System.out.println("Empresa, Admin, Funcionário e Item");
+        System.out.println("Empresa, Pessoa, Admin, Funcionário e Item");
         Empresa empresa = new Empresa("FIAP", "12345678910");
 
         Admin admin = new Admin("Admin", "12345678910", "01234567890", "123456", empresa);
@@ -17,6 +17,7 @@ public class Main {
                 "Funcionário");
 
         admin.cadastrarFuncionario(funcionario1);
+        empresa.promoteFuncionario(funcionario1, "Gerente");
 
         Item item1 = new Item("Google", "G", "https://google.com");
 
@@ -26,7 +27,11 @@ public class Main {
 
         funcionario1.listarItens();
 
-        admin.removerFuncionario(funcionario1);
+        Pessoa pessoa = new Pessoa("Pessoa", "01234567890", "teste2@fiap.com.br");
+
+        Funcionario funcionario2 = empresa.contratarPessoa(pessoa, "123456");
+
+        admin.removerFuncionario(funcionario2);
 
         System.out.println("=====================================");
         System.out.println("Estações, Linhas, Trens, Maquinistas e Percursos");

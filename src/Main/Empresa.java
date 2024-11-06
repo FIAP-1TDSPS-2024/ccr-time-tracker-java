@@ -28,4 +28,15 @@ public class Empresa {
         funcionarios.remove(funcionario);
     }
 
+    public void promoteFuncionario(Funcionario funcionario, String cargo) {
+        funcionario.setCargo(cargo);
+    }
+
+    public Funcionario contratarPessoa(Pessoa pessoa, String senha) {
+        Funcionario funcionario = new Funcionario(pessoa.getNome(), pessoa.getCpf(), pessoa.getEmail(), senha,
+                "Funcionário");
+        cadastrarFuncionario(funcionario);
+
+        return funcionario;
+    }
 }

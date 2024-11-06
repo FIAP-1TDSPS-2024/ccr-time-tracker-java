@@ -9,6 +9,10 @@ public class Admin extends Funcionario {
         this.empresa = empresa;
     }
 
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+
     public void cadastrarFuncionario(Funcionario funcionario) {
         this.empresa.cadastrarFuncionario(funcionario);
     }
@@ -16,4 +20,9 @@ public class Admin extends Funcionario {
     public void removerFuncionario(Funcionario funcionario) {
         this.empresa.removerFuncionario(funcionario);
     }
+
+    public void promoteFuncionario(Funcionario funcionario, String cargo) {
+        this.empresa.promoteFuncionario(funcionario, cargo);
+    }
+
 }
