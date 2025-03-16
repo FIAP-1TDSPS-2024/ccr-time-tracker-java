@@ -134,7 +134,7 @@ public class EstacaoDAO {
     public List<Estacao> listar(){
 
         //criando uma lista de Clientes
-        List<Estacao> clientes = new ArrayList<Estacao>();
+        List<Estacao> estacoes = new ArrayList<Estacao>();
 
         //Configurando a query
         String sql = "SELECT * FROM estacao";
@@ -151,7 +151,7 @@ public class EstacaoDAO {
                 String sigla = rs.getString("sigla");
                 String endereco = rs.getString("endereco");
 
-                clientes.add(new Estacao(id_estacao, nome, sigla, endereco));
+                estacoes.add(new Estacao(id_estacao, nome, sigla, endereco));
             }
 
         } catch (SQLException e) {
@@ -163,6 +163,6 @@ public class EstacaoDAO {
                 e.printStackTrace();
             }
         }
-        return clientes;
+        return estacoes;
     }
 }

@@ -1,7 +1,9 @@
 package model.dao;
 
 import credentials.Credenciais;
+import model.vo.Admin;
 import model.vo.Estacao;
+import model.vo.Funcionario;
 import oracle.jdbc.datasource.impl.OracleDataSource;
 
 import java.sql.Connection;
@@ -42,18 +44,20 @@ public class FuncionarioDAO {
     }
 
     //método inserir()
-    public boolean inserir(Estacao estacao) {
+    public boolean inserir(Funcionario funcionario, Admin admin) {
 
         //persons é o nome da tabela
-        String sql = "INSERT into funcionario VALUES(?, ?, ?, ?)";
+        String sql = "INSERT into funcionario VALUES(?, ?, ?, ?, ?, ?)";
 
         //preparação do statement
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, estacao.getId_estacao());
-            ps.setString(2, estacao.getNome());
-            ps.setString(3, estacao.getSigla());
-            ps.setString(4, estacao.getEndereco());
+            ps.setInt(1, funcionario.getId_funcionario());
+            ps.setString(2, funcionario.getNome());
+            ps.setString(3, funcionario.getCpf());
+            ps.setString(4, funcionario.getCargo());
+            ps.setString(5, funcionario.getEmail());
+            ps.setInt(6, admin.getId_funcionario());
             ps.execute();
         } catch (SQLException e) {
             if(conn == null) {
@@ -77,13 +81,13 @@ public class FuncionarioDAO {
 
     //método excluir()
     public boolean excluir(int id) {
-        String sql = "DELETE FROM estacao WHERE id_estacao = ?";
+        String sql = "DELETE FROM funcionario WHERE id_funcionario = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             ps.execute();
         } catch (SQLException e) {
-            System.err.println("Erro ao remover estacão!");
+            System.err.println("Erro ao remover funcionário!");
             e.printStackTrace();
             return false;
         }finally {
@@ -99,18 +103,20 @@ public class FuncionarioDAO {
     }
 
     //Método atualizar
-    public void update(Estacao estacao){
-        System.out.println("Atualizando Estação " + estacao.getNome());
+    public void update(Funcionario funcionario, Admin admin){
+        System.out.println("Atualizando Funcionário " + funcionario.getNome());
 
-        String sql = "update cliente SET nome = ?, sigla = ?, endereco = ? " +
-                "WHERE id_estacao = ?";
+        String sql = "update cliente SET nome = ?, cpf= ?, cargo = ?, email = ?, senha = ?, id_funcionario_admin = ?" +
+                "WHERE id_funcionario = ?";
 
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, estacao.getNome());
-            ps.setString(2, estacao.getSigla());
-            ps.setString(3, estacao.getEndereco());
-            ps.setInt(4, estacao.getId_estacao());
+            ps.setString(1, funcionario.getNome());
+            ps.setString(2, funcionario.getCpf());
+            ps.setString(3, funcionario.getCargo());
+            ps.setString(4, funcionario.getEmail());
+            ps.setInt(5, admin.getId_funcionario());
+            ps.setInt(6, funcionario.getId_funcionario());
             ps.execute();
         } catch (SQLException e) {
             if (conn == null){
@@ -130,13 +136,13 @@ public class FuncionarioDAO {
     }
 
     //Método ler
-    public List<Estacao> listar(){
+    public List<Funcionario> listar(){
 
-        //criando uma lista de Clientes
-        List<Estacao> clientes = new ArrayList<Estacao>();
+        //criando uma lista de Funcionários
+        List<Funcionario> funcionarios = new ArrayList<Funcionario>();
 
         //Configurando a query
-        String sql = "SELECT * FROM estacao";
+        String sql = "SELECT * FROM funcionario";
 
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -145,12 +151,14 @@ public class FuncionarioDAO {
             ResultSet rs = ps.executeQuery(sql);
 
             while (rs.next()){
-                int id_estacao = rs.getInt("id_estacao");
+                int id_funcionario = rs.getInt("id_estacao");
                 String nome = rs.getString("nome");
-                String sigla = rs.getString("sigla");
-                String endereco = rs.getString("endereco");
+                String cpf = rs.getString("sigla");
+                String cargo = rs.getString("cargo");
+                String email = rs.getString("email");
+                String senha = rs.getString("senha");
 
-                clientes.add(new Estacao(id_estacao, nome, sigla, endereco));
+                funcionarios.add(new Funcionario(id_funcionario, nome, cpf, email, senha, cargo));
             }
 
         } catch (SQLException e) {
@@ -162,6 +170,6 @@ public class FuncionarioDAO {
                 e.printStackTrace();
             }
         }
-        return clientes;
+        return funcionarios;
     }
 }
