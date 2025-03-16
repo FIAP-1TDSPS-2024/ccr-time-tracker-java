@@ -1,9 +1,9 @@
-package Main;
+package model.vo;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class Percurso {
+public class Viagem {
 
     private Estacao estacaoOrigem;
     private Estacao estacaoDestino;
@@ -11,7 +11,7 @@ public class Percurso {
     private LocalDateTime dataInicio;
     private LocalDateTime dataFim;
 
-    public Percurso(Estacao estacaoOrigem, Estacao estacaoDestino, Linha linha) {
+    public Viagem(Estacao estacaoOrigem, Estacao estacaoDestino, Linha linha) {
         this.estacaoOrigem = estacaoOrigem;
         this.estacaoDestino = estacaoDestino;
         this.linha = linha;

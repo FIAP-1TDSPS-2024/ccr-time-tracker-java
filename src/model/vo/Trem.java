@@ -1,10 +1,9 @@
-package Main;
+package model.vo;
 
 public class Trem {
     private String nome;
     private String abreviacao;
     private boolean ativo;
-    private Maquinista maquinista;
 
     public Trem(String nome, String abreviacao, boolean ativo) {
         this.nome = nome;
@@ -44,11 +43,4 @@ public class Trem {
         this.ativo = true;
     }
 
-    public Maquinista getMaquinista() {
-        return maquinista;
-    }
-
-    public void setMaquinista(Maquinista maquinista) {
-        this.maquinista = maquinista;
-    }
 }

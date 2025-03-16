@@ -1,4 +1,4 @@
-package Main;
+package model.vo;
 
 public class Admin extends Funcionario {
 

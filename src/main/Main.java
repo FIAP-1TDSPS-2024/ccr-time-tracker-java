@@ -1,4 +1,6 @@
-package Main;
+package main;
+
+import model.vo.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,34 +46,6 @@ public class Main {
         Linha linha1 = new Linha("Linha 1", "L1",
                 new ArrayList<Estacao>(Arrays.asList(estacao1, estacao2, estacao3, estacao4, estacao5)));
 
-        Trem trem1 = new Trem("Trem 1", "T1", true);
-        Trem trem2 = new Trem("Trem 2", "T2", true);
-
-        Maquinista maquinista1 = new Maquinista("Maquinista 1", "12345678910", "maquinista@fiap.com.br", "123456");
-        Maquinista maquinista2 = new Maquinista("Maquinista 2", "12345678911", "maquinista2@fiap.com.br", "123456");
-
-        // Senha correta
-        maquinista1.login("123456");
-
-        // Senha incorreta
-        maquinista1.login("1234567");
-
-        maquinista1.setTrem(trem1);
-        maquinista2.setTrem(trem2);
-
-        trem1.setMaquinista(maquinista1);
-        trem2.setMaquinista(maquinista2);
-
-        trem1.getMaquinista().andar();
-        trem1.getMaquinista().estacionar();
-        trem1.getMaquinista().abrirPortas();
-        trem1.getMaquinista().fecharPortas();
-
-        trem2.getMaquinista().andar();
-        trem2.getMaquinista().estacionar();
-        trem2.getMaquinista().abrirPortas();
-        trem2.getMaquinista().fecharPortas();
-
         System.out.println("Estações da linha " + linha1.getNome() + ":");
         for (Estacao estacao : linha1.getEstacoes()) {
             System.out.println(estacao.getNome());
@@ -82,7 +56,7 @@ public class Main {
             System.out.println(estacao.getNome());
         }
 
-        Percurso percurso1 = new Percurso(estacao4, estacao5, linha1);
+        Viagem percurso1 = new Viagem(estacao4, estacao5, linha1);
 
         percurso1.iniciarPercurso();
         System.out.println("Percurso iniciado em: " + percurso1.getDataInicio());

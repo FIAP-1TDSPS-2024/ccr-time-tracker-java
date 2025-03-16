@@ -1,4 +1,4 @@
-package Main;
+package model.vo;
 
 public class Pessoa {
     private String nome;

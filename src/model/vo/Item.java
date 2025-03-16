@@ -1,4 +1,4 @@
-package Main;
+package model.vo;
 
 public class Item {
     private String nome;
