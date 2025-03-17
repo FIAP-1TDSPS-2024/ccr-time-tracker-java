@@ -1,34 +1,26 @@
 package model.vo;
 
 public class Trem {
-    private String nome;
-    private String abreviacao;
+    private int id_trem;
     private boolean ativo;
+    private int numeracao;
 
-    public Trem(String nome, String abreviacao, boolean ativo) {
-        this.nome = nome;
-        this.abreviacao = abreviacao;
+    public Trem(int id_trem, String nome, String abreviacao, boolean ativo, int numeracao) {
+        this.id_trem = id_trem;
         this.ativo = ativo;
+        this.numeracao = numeracao;
     }
 
-    public String getNome() {
-        return nome;
+    public int getId_trem() {
+        return id_trem;
     }
 
-    public String getAbreviacao() {
-        return abreviacao;
+    public int getNumeracao() {
+        return numeracao;
     }
 
     public boolean isAtivo() {
         return ativo;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setAbreviacao(String abreviacao) {
-        this.abreviacao = abreviacao;
     }
 
     public void setAtivo(boolean ativo) {

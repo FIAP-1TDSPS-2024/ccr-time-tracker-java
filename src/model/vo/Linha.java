@@ -5,14 +5,12 @@ import java.util.ArrayList;
 // Linha tem várias estações
 public class Linha {
     private int id_linha;
-    private int numero;
     private String nome;
     private String sigla;
     private ArrayList<Estacao> estacoes;
 
-    public Linha(int id_linha, int numero, String nome, String sigla, ArrayList<Estacao> estacoes) {
+    public Linha(int id_linha, String nome, String sigla, ArrayList<Estacao> estacoes) {
         this.id_linha = id_linha;
-        this.numero = numero;
         this.nome = nome;
         this.sigla = sigla;
         this.estacoes = estacoes;
@@ -20,10 +18,6 @@ public class Linha {
 
     public int getId_linha() {
         return id_linha;
-    }
-
-    public int getNumero() {
-        return numero;
     }
 
     public String getNome() {

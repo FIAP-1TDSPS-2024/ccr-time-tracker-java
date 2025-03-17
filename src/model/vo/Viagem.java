@@ -1,20 +1,33 @@
 package model.vo;
 
+import java.sql.Date;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class Viagem {
 
+    private int id_viagem;
     private Estacao estacaoOrigem;
     private Estacao estacaoDestino;
-    private Linha linha;
     private LocalDateTime dataInicio;
     private LocalDateTime dataFim;
 
-    public Viagem(Estacao estacaoOrigem, Estacao estacaoDestino, Linha linha) {
+    public Viagem(int id_viagem, Estacao estacaoOrigem, Estacao estacaoDestino) {
+        this.id_viagem = id_viagem;
         this.estacaoOrigem = estacaoOrigem;
         this.estacaoDestino = estacaoDestino;
-        this.linha = linha;
+    }
+
+    public int getId_viagem() {
+        return id_viagem;
+    }
+
+    public Estacao getEstacaoOrigem() {
+        return estacaoOrigem;
+    }
+
+    public Estacao getEstacaoDestino() {
+        return estacaoDestino;
     }
 
     public Estacao getestacaoOrigem() {
@@ -25,10 +38,6 @@ public class Viagem {
         return estacaoDestino;
     }
 
-    public Linha getLinha() {
-        return linha;
-    }
-
     public void setEstacaoOrigem(Estacao estacaoOrigem) {
         this.estacaoOrigem = estacaoOrigem;
     }
@@ -37,15 +46,11 @@ public class Viagem {
         this.estacaoDestino = estacaoDestino;
     }
 
-    public void setLinha(Linha linha) {
-        this.linha = linha;
-    }
-
-    public LocalDateTime getDataInicio() {
+    public Date getDataInicio() {
         return dataInicio;
     }
 
-    public LocalDateTime getDataFim() {
+    public Date getDataFim() {
         return dataFim;
     }
 

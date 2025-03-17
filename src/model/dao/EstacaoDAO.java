@@ -165,4 +165,45 @@ public class EstacaoDAO {
         }
         return estacoes;
     }
+
+    //Método consultar estacoes por linha
+    public List<Estacao> listarEstacoesLinha(int idEstacao){
+
+        //criando uma lista de Clientes
+        List<Estacao> estacoes = new ArrayList<Estacao>();
+
+        //Configurando a query
+        String sql = "SELECT * FROM estacao" +
+                     "INNER JOIN linha_estacao" +
+                     "ON linha_estacao.id_linha = estacao.id_estacao" +
+                     " WHERE id_linha = ?; ";
+
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            //Preparar o objeto para receber os resultados
+            ResultSet rs = ps.executeQuery(sql);
+            ps.setInt(1, idEstacao);
+            ps.execute();
+
+            while (rs.next()){
+                int id_estacao = rs.getInt("id_estacao");
+                String nome = rs.getString("nome");
+                String sigla = rs.getString("sigla");
+                String endereco = rs.getString("endereco");
+
+                estacoes.add(new Estacao(id_estacao, nome, sigla, endereco));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return estacoes;
+    }
 }
