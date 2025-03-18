@@ -47,7 +47,7 @@ public class FuncionarioDAO {
     public boolean inserir(Funcionario funcionario, Admin admin) {
 
         //persons é o nome da tabela
-        String sql = "INSERT into funcionario VALUES(?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT into funcionario VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
         //preparação do statement
         try {
@@ -57,7 +57,9 @@ public class FuncionarioDAO {
             ps.setString(3, funcionario.getCpf());
             ps.setString(4, funcionario.getCargo());
             ps.setString(5, funcionario.getEmail());
-            ps.setInt(6, admin.getId_funcionario());
+            ps.setString(6, funcionario.getSenha());
+            ps.setString(7, "false");
+            ps.setInt(8, admin.getId_funcionario());
             ps.execute();
         } catch (SQLException e) {
             if(conn == null) {
@@ -151,7 +153,7 @@ public class FuncionarioDAO {
             ResultSet rs = ps.executeQuery(sql);
 
             while (rs.next()){
-                int id_funcionario = rs.getInt("id_estacao");
+                int id_funcionario = rs.getInt("id_funcionario");
                 String nome = rs.getString("nome");
                 String cpf = rs.getString("sigla");
                 String cargo = rs.getString("cargo");
@@ -172,4 +174,72 @@ public class FuncionarioDAO {
         }
         return funcionarios;
     }
+
+    public Funcionario autenticar(String email, String senha){
+
+        //Configurando a query
+        String sql = "SELECT * FROM funcionario WHERE email = ? AND senha = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            ps.setString(2, senha);
+
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+                int id_funcionario = rs.getInt("id_funcionario");
+                String nome = rs.getString("nome");
+                String cpf = rs.getString("cpf");
+                String cargo = rs.getString("cargo");
+                String admin = rs.getString("admin");
+
+                if (admin.equals("true")){
+                    return new Admin(id_funcionario, nome, cpf, email, senha, cargo);
+                }
+                else{
+                    return new Funcionario(id_funcionario, nome, cpf, email, senha, cargo);
+                }
+            }
+            else{
+                return null;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao autenticar funcionário!");
+            e.printStackTrace();
+            return null;
+        }finally {
+            System.out.println("Fechando a conexão com o banco de dados!");
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                System.err.println("Não foi possível encerrar a conexão!");
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public int definirID(){
+
+        //Configurando a query
+        String sql = "SELECT MAX(id_funcionario) AS maior_id FROM funcionario";
+        int novoId = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+                novoId = (rs.getInt("maior_id")) + 1;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao autenticar funcionário!");
+            e.printStackTrace();
+        }finally {
+            System.out.println("Fechando a conexão com o banco de dados!");
+        }
+        return novoId;
+    }
+
+
 }
