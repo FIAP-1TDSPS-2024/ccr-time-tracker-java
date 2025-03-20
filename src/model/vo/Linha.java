@@ -1,19 +1,21 @@
 package model.vo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 // Linha tem várias estações
 public class Linha {
     private int id_linha;
     private String nome;
     private String sigla;
-    private ArrayList<Estacao> estacoes;
+    private int numero;
+    private List<Estacao> estacoes;
 
-    public Linha(int id_linha, String nome, String sigla, ArrayList<Estacao> estacoes) {
+    public Linha(int id_linha, String nome, String sigla, int numero) {
         this.id_linha = id_linha;
         this.nome = nome;
         this.sigla = sigla;
-        this.estacoes = estacoes;
+        this.numero = numero;
     }
 
     public int getId_linha() {
@@ -28,7 +30,11 @@ public class Linha {
         return sigla;
     }
 
-    public ArrayList<Estacao> getEstacoes() {
+    public int getNumero() {
+        return numero;
+    }
+
+    public List<Estacao> getEstacoes() {
         return estacoes;
     }
 }

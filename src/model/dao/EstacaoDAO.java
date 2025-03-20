@@ -167,7 +167,7 @@ public class EstacaoDAO {
     }
 
     //Método consultar estacoes por linha
-    public List<Estacao> listarEstacoesLinha(int idEstacao){
+    public List<Estacao> listarEstacoesLinha(int numeroEstacao){
 
         //criando uma lista de Clientes
         List<Estacao> estacoes = new ArrayList<Estacao>();
@@ -176,14 +176,14 @@ public class EstacaoDAO {
         String sql = "SELECT * FROM estacao" +
                      "INNER JOIN linha_estacao" +
                      "ON linha_estacao.id_linha = estacao.id_estacao" +
-                     " WHERE id_linha = ?; ";
+                     " WHERE numero = ?; ";
 
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
 
             //Preparar o objeto para receber os resultados
             ResultSet rs = ps.executeQuery(sql);
-            ps.setInt(1, idEstacao);
+            ps.setInt(1, numeroEstacao);
             ps.execute();
 
             while (rs.next()){

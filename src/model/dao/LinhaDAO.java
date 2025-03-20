@@ -2,6 +2,7 @@ package model.dao;
 
 import credentials.Credenciais;
 import model.vo.Estacao;
+import model.vo.Item;
 import model.vo.Linha;
 import oracle.jdbc.datasource.impl.OracleDataSource;
 
@@ -65,7 +66,8 @@ public class LinhaDAO {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, linha.getNome());
             ps.setString(2, linha.getSigla());
-            ps.setInt(3, linha.getId_linha());
+            ps.setInt(3, linha.getNumero());
+            ps.setInt(4, linha.getId_linha());
             ps.execute();
         } catch (SQLException e) {
             System.err.println("Erro ao atualizar linha!");
@@ -87,6 +89,7 @@ public class LinhaDAO {
                 int id_linha = rs.getInt("id_linha");
                 String nome = rs.getString("nome");
                 String sigla = rs.getString("sigla");
+                int numero = rs.getInt("numero");
 
 
                 EstacaoDAO estacaoDAO = new EstacaoDAO();
@@ -94,7 +97,7 @@ public class LinhaDAO {
 
                 estacoes = estacaoDAO.listarEstacoesLinha(id_linha);
 
-                linhas.add(new Linha(id_linha, nome, sigla, (ArrayList<Estacao>) estacoes));
+                linhas.add(new Linha(id_linha, nome, sigla, numero));
             }
         } catch (SQLException e) {
             System.err.println("Erro ao listar linhas!");
@@ -103,6 +106,30 @@ public class LinhaDAO {
             fecharConexao();
         }
         return linhas;
+    }
+
+    public Item selecionarLinha(int numero){
+        Linha linha = null;
+        String sql = "SELECT * FROM linha " +
+                "WHERE numero = ?";
+
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, numero);
+
+            ResultSet rs = ps.executeQuery();
+
+
+            int id_linha = rs.getInt("id_linha");
+            String nome = rs.getString("nome");
+            String sigla = rs.getString("sigla");
+
+            linha = new Linha(id_linha, nome, sigla, numero);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private void fecharConexao() {

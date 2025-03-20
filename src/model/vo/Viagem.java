@@ -71,21 +71,11 @@ public class Viagem {
         return dataFim;
     }
 
-    public void iniciarPercurso() {
-        System.out.println("Iniciando percurso de " + estacaoOrigem.getNome() + " até " + estacaoDestino.getNome());
-        this.dataInicio = new Timestamp(System.currentTimeMillis());
-
+    public void setDataInicio(Timestamp dataInicio) {
+        this.dataInicio = dataInicio;
     }
 
-    public void finalizarPercurso() {
-        System.out.println("Finalizando percurso de " + estacaoOrigem.getNome() + " até " + estacaoDestino.getNome());
-        this.dataFim = new Timestamp(System.currentTimeMillis());
+    public void setDataFim(Timestamp dataFim) {
+        this.dataFim = dataFim;
     }
-
-    public void imprimirTempoDePercurso() {
-        Duration duracao = Duration.between((Temporal) dataInicio, (Temporal) dataFim);
-        long duracaoEmSegundos = duracao.getSeconds();
-        System.out.println("Tempo de percurso: " + duracaoEmSegundos + " segundos");
-    }
-
 }

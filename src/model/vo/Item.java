@@ -31,7 +31,7 @@ public class Item {
         return url;
     }
 
-    public boolean isFavorito() {
+    public boolean getFavorito() {
         return favorito;
     }
 
@@ -39,8 +39,5 @@ public class Item {
         this.favorito = favorito;
     }
 
-    public void acessar() {
-        System.out.println("Acessando " + nome + "...");
-    }
 
 }

@@ -91,5 +91,25 @@ public class ViagemDAO {
         }
         return viagens;
     }
+
+    public int definirID(){
+
+        //Configurando a query
+        String sql = "SELECT MAX(id_item) AS maior_id FROM item";
+        int novoId = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+                novoId = (rs.getInt("maior_id")) + 1;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao gerar ID!");
+            e.printStackTrace();
+        }
+        return novoId;
+    }
 }
 

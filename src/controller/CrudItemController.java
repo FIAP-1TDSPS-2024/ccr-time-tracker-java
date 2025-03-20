@@ -54,6 +54,4 @@ public class CrudItemController {
         Item item = model.selecionarItem(id);
         String mensagem = "Nome: " + item.getNome() + ", ID: " + item.getId_item() + ", URL: " + item.getUrl();
     }
-
-
 }
