@@ -1,5 +1,6 @@
 package model.dao;
 
+import connection.CrudConnection;
 import credentials.Credenciais;
 import model.vo.Funcionario;
 import model.vo.Item;
@@ -13,23 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemDAO {
-    // Connection URL: URL de conexão com o banco de dados Oracle
-    private String url = "jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl";
-    private Connection conn;
 
-    public ItemDAO() throws SQLException {
-        OracleDataSource ods = new OracleDataSource();
+    private java.sql.Connection conn;
+    private CrudConnection connection;
 
-        // Configurando a URL
-        ods.setURL(url);
-        // Configurando o usuário
-        ods.setUser(Credenciais.user);
-        // Configurando a senha
-        ods.setPassword(Credenciais.pwd);
-        // Obtendo uma conexão com o JDBC
-        conn = ods.getConnection();
-
-        System.out.println("Conectado ao banco de dados!");
+    public ItemDAO(CrudConnection conn) throws SQLException {
+        this.conn = conn.getConn();
+        this.connection = conn;
     }
 
     // Método para inserir um item
@@ -48,8 +39,6 @@ public class ItemDAO {
             System.err.println("Erro no PreparedStatement!");
             e.printStackTrace();
             return false;
-        } finally {
-            fecharConexao();
         }
         return true;
     }
@@ -66,8 +55,6 @@ public class ItemDAO {
             System.err.println("Erro ao remover item!");
             e.printStackTrace();
             return false;
-        } finally {
-            fecharConexao();
         }
         return true;
     }
@@ -88,19 +75,19 @@ public class ItemDAO {
             System.err.println("Erro no PreparedStatement ao atualizar item!");
             e.printStackTrace();
             return false;
-        } finally {
-            fecharConexao();
         }
         return true;
     }
 
-    // Método para listar todos os itens
-    public List<Item> listar() {
+    public List<Item> listarItensFunc(int idUsuario){
         List<Item> itens = new ArrayList<>();
-        String sql = "SELECT * FROM item";
+        String sql = "SELECT * FROM item " +
+                     "WHERE id_funcionario = ?";
 
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, idUsuario);
+
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -113,22 +100,52 @@ public class ItemDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            fecharConexao();
         }
         return itens;
+
     }
 
-    // Método para fechar a conexão com o banco de dados
-    private void fecharConexao() {
-        System.out.println("Fechando a conexão com o banco de dados!");
+    public Item selecionarItem(int id){
+        Item item = null;
+        String sql = "SELECT * FROM item " +
+                "WHERE id_item = ?";
+
         try {
-            if (conn != null && !conn.isClosed()) {
-                conn.close();
-            }
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+
+
+            int idItem = rs.getInt("id_item");
+            String nome = rs.getString("nome");
+            String abreviacao = rs.getString("abreviacao");
+            String url = rs.getString("url");
+            item = new Item(idItem, nome, abreviacao, url);
+
         } catch (SQLException e) {
-            System.err.println("Erro ao fechar a conexão!");
             e.printStackTrace();
         }
+        return null;
+    }
+
+    public int definirID(){
+
+        //Configurando a query
+        String sql = "SELECT MAX(id_item) AS maior_id FROM item";
+        int novoId = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+                novoId = (rs.getInt("maior_id")) + 1;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao gerar ID!");
+            e.printStackTrace();
+        }
+        return novoId;
     }
 }

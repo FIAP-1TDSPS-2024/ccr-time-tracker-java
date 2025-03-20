@@ -11,6 +11,11 @@ public class CrudFuncionarioView {
         scanner = new Scanner(System.in);
     }
 
+    public int obterIdFuncionario(){
+        System.out.println("ID: ");
+        return scanner.nextInt();
+    }
+
     public String obterNomeFuncionario(){
         System.out.println("Nome: ");
         return scanner.nextLine();

@@ -4,12 +4,8 @@ import credentials.Credenciais;
 import model.vo.Viagem;
 import oracle.jdbc.datasource.impl.OracleDataSource;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ViagemDAO {
@@ -32,15 +28,13 @@ public class ViagemDAO {
             ps.setInt(1, viagem.getId_viagem());
             ps.setInt(2, viagem.getestacaoOrigem().getId_estacao());
             ps.setInt(3, viagem.getEstacaoDestino().getId_estacao());
-            ps.setDate(4, viagem.getDataInicio());
-            ps.setDate(5, viagem.getDataFim());
+            ps.setTimestamp(4, viagem.getDataInicio());
+            ps.setTimestamp(5, viagem.getDataFim());
             ps.execute();
         } catch (SQLException e) {
             System.err.println("Erro ao inserir viagem!");
             e.printStackTrace();
             return false;
-        } finally {
-            fecharConexao();
         }
         return true;
     }
@@ -55,8 +49,6 @@ public class ViagemDAO {
             System.err.println("Erro ao remover viagem!");
             e.printStackTrace();
             return false;
-        } finally {
-            fecharConexao();
         }
         return true;
     }
@@ -67,16 +59,14 @@ public class ViagemDAO {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, viagem.getEstacaoOrigem().getId_estacao());
             ps.setInt(2, viagem.getEstacaoDestino().getId_estacao());
-            ps.setDate(3, viagem.getDataInicio());
-            ps.setDate(4, viagem.getDataFim());
+            ps.setTimestamp(3, viagem.getDataInicio());
+            ps.setTimestamp(4, viagem.getDataFim());
             ps.setInt(5, viagem.getId_viagem());
             ps.execute();
         } catch (SQLException e) {
             System.err.println("Erro ao atualizar viagem!");
             e.printStackTrace();
             return false;
-        } finally {
-            fecharConexao();
         }
         return true;
     }
@@ -98,22 +88,8 @@ public class ViagemDAO {
         } catch (SQLException e) {
             System.err.println("Erro ao listar viagens!");
             e.printStackTrace();
-        } finally {
-            fecharConexao();
         }
         return viagens;
-    }
-
-    private void fecharConexao() {
-        try {
-            if (conn != null && !conn.isClosed()) {
-                conn.close();
-                System.out.println("Conexão fechada!");
-            }
-        } catch (SQLException e) {
-            System.err.println("Erro ao fechar a conexão!");
-            e.printStackTrace();
-        }
     }
 }
 

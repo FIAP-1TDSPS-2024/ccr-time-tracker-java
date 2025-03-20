@@ -1,6 +1,7 @@
 package model.vo;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,8 +13,8 @@ public class Viagem {
     private int id_viagem;
     private Estacao estacaoOrigem;
     private Estacao estacaoDestino;
-    private Date dataInicio;
-    private Date dataFim;
+    private Timestamp dataInicio;
+    private Timestamp dataFim;
     private Linha linha;
     private Trem trem;
 
@@ -62,22 +63,23 @@ public class Viagem {
         this.estacaoDestino = estacaoDestino;
     }
 
-    public Date getDataInicio() {
+    public Timestamp getDataInicio() {
         return dataInicio;
     }
 
-    public Date getDataFim() {
+    public Timestamp getDataFim() {
         return dataFim;
     }
 
     public void iniciarPercurso() {
         System.out.println("Iniciando percurso de " + estacaoOrigem.getNome() + " até " + estacaoDestino.getNome());
-        this.dataInicio = Date.valueOf(LocalDate.now());
+        this.dataInicio = new Timestamp(System.currentTimeMillis());
+
     }
 
     public void finalizarPercurso() {
         System.out.println("Finalizando percurso de " + estacaoOrigem.getNome() + " até " + estacaoDestino.getNome());
-        this.dataFim = Date.valueOf(LocalDate.now());
+        this.dataFim = new Timestamp(System.currentTimeMillis());
     }
 
     public void imprimirTempoDePercurso() {

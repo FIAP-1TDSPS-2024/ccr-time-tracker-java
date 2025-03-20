@@ -1,12 +1,10 @@
 package model.dao;
 
-import credentials.Credenciais;
-import model.vo.Admin;
-import model.vo.Estacao;
+import connection.CrudConnection;
+import model.bo.AdminBO;
+import model.bo.FuncionarioBO;
 import model.vo.Funcionario;
-import oracle.jdbc.datasource.impl.OracleDataSource;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,28 +21,16 @@ public class FuncionarioDAO {
      * is the Oracle service name.
      */
 
-    private String url = "jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl";
-    private Connection conn;
+    private final java.sql.Connection conn;
+    private final CrudConnection connection;
 
-
-    public FuncionarioDAO() throws SQLException {
-
-        OracleDataSource ods = new OracleDataSource();
-
-        //configurando a URL
-        ods.setURL(url);
-        //configurando o usuário
-        ods.setUser(Credenciais.user);
-        //configurando a senha
-        ods.setPassword(Credenciais.pwd);
-        //obtendo uma conexão com o jdbc
-        conn = ods.getConnection();
-
-        System.out.println("Conectado!");
+    public FuncionarioDAO(CrudConnection conn) throws SQLException {
+        this.conn = conn.getConn();
+        this.connection = conn;
     }
 
     //método inserir()
-    public boolean inserir(Funcionario funcionario, Admin admin) {
+    public boolean inserir(Funcionario funcionario, AdminBO adminBO) {
 
         //persons é o nome da tabela
         String sql = "INSERT into funcionario VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
@@ -59,7 +45,7 @@ public class FuncionarioDAO {
             ps.setString(5, funcionario.getEmail());
             ps.setString(6, funcionario.getSenha());
             ps.setString(7, "false");
-            ps.setInt(8, admin.getId_funcionario());
+            ps.setInt(8, adminBO.getId_funcionario());
             ps.execute();
         } catch (SQLException e) {
             if(conn == null) {
@@ -71,12 +57,6 @@ public class FuncionarioDAO {
             return false;
         }finally {
             System.out.println("Fechando a conexão com o banco de dados!");
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar a conexão!");
-                e.printStackTrace();
-            }
         }
         return true;
     }
@@ -94,18 +74,12 @@ public class FuncionarioDAO {
             return false;
         }finally {
             System.out.println("Fechando a conexão com o banco de dados!");
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                System.err.println("Não foi possível encerrar a conexão!");
-                e.printStackTrace();
-            }
         }
         return true;
     }
 
     //Método atualizar
-    public void update(Funcionario funcionario, Admin admin){
+    public void update(Funcionario funcionario, AdminBO adminBO){
         System.out.println("Atualizando Funcionário " + funcionario.getNome());
 
         String sql = "update cliente SET nome = ?, cpf= ?, cargo = ?, email = ?, senha = ?, id_funcionario_admin = ?" +
@@ -117,7 +91,7 @@ public class FuncionarioDAO {
             ps.setString(2, funcionario.getCpf());
             ps.setString(3, funcionario.getCargo());
             ps.setString(4, funcionario.getEmail());
-            ps.setInt(5, admin.getId_funcionario());
+            ps.setInt(5, adminBO.getId_funcionario());
             ps.setInt(6, funcionario.getId_funcionario());
             ps.execute();
         } catch (SQLException e) {
@@ -129,11 +103,6 @@ public class FuncionarioDAO {
             }
             e.printStackTrace();
         } finally {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -155,7 +124,7 @@ public class FuncionarioDAO {
             while (rs.next()){
                 int id_funcionario = rs.getInt("id_funcionario");
                 String nome = rs.getString("nome");
-                String cpf = rs.getString("sigla");
+                String cpf = rs.getString("cpf");
                 String cargo = rs.getString("cargo");
                 String email = rs.getString("email");
                 String senha = rs.getString("senha");
@@ -166,11 +135,6 @@ public class FuncionarioDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
         return funcionarios;
     }
@@ -194,10 +158,10 @@ public class FuncionarioDAO {
                 String admin = rs.getString("admin");
 
                 if (admin.equals("true")){
-                    return new Admin(id_funcionario, nome, cpf, email, senha, cargo);
+                    return new AdminBO(id_funcionario, nome, cpf, email, senha, cargo, connection);
                 }
                 else{
-                    return new Funcionario(id_funcionario, nome, cpf, email, senha, cargo);
+                    return new FuncionarioBO(id_funcionario, nome, cpf, email, senha, cargo, connection);
                 }
             }
             else{
@@ -210,12 +174,6 @@ public class FuncionarioDAO {
             return null;
         }finally {
             System.out.println("Fechando a conexão com o banco de dados!");
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                System.err.println("Não foi possível encerrar a conexão!");
-                e.printStackTrace();
-            }
         }
     }
 
@@ -233,10 +191,8 @@ public class FuncionarioDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println("Erro ao autenticar funcionário!");
+            System.err.println("Erro ao gerar ID!");
             e.printStackTrace();
-        }finally {
-            System.out.println("Fechando a conexão com o banco de dados!");
         }
         return novoId;
     }
